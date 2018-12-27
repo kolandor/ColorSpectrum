@@ -10,6 +10,7 @@ namespace ColorSpectrum
     {
         Red,
         Green,
-        Blue
+        Blue,
+        Mono
     }
 }

@@ -21,7 +21,7 @@ namespace ColorSpectrum
 
         void SetSaveButtonsState(bool state)
         {
-            buttonSRed.Enabled = buttonSBlue.Enabled = buttonSGreen.Enabled = state;
+            buttonSRed.Enabled = buttonSBlue.Enabled = buttonSGreen.Enabled = buttonSMono.Enabled = state;
         }
 
         private void buttonOpenImg_Click(object sender, EventArgs e)
@@ -45,6 +45,7 @@ namespace ColorSpectrum
                         pictureBoxRed.Image = GetSpecterFromImage(selectedImage, Specter.Red);
                         pictureBoxGreen.Image = GetSpecterFromImage(selectedImage, Specter.Green);
                         pictureBoxBlue.Image = GetSpecterFromImage(selectedImage, Specter.Blue);
+                        pictureBoxMono.Image = GetSpecterFromImage(selectedImage, Specter.Mono);
 
                         SetSaveButtonsState(true);
                     }
@@ -74,9 +75,24 @@ namespace ColorSpectrum
                     {
                         pixelOrig = Color.FromArgb(0, pixelOrig.G, 0);
                     }
-                    else
+                    else if(specter == Specter.Blue)
                     {
                         pixelOrig = Color.FromArgb(0, 0, pixelOrig.B);
+                    }
+                    else
+                    {
+                        int monoColor = (pixelOrig.R + pixelOrig.G + pixelOrig.B) / 3;
+
+                        /*if(monoColor > (byte.MaxValue / 2) + 5)
+                        {
+                            pixelOrig = Color.FromArgb(255, 255, 255);
+                        }
+                        else
+                        {
+                            pixelOrig = Color.FromArgb(0, 0, 0);
+                        }*/
+
+                        pixelOrig = Color.FromArgb(monoColor, monoColor, monoColor);
                     }
 
                     newImageFromSpecter.SetPixel(x, y, pixelOrig);
@@ -107,9 +123,13 @@ namespace ColorSpectrum
                     {
                         pictureBoxGreen.Image.Save(sfd.FileName, ImageFormat.Png);
                     }
-                    else
+                    else if (sender == buttonSBlue)
                     {
                         pictureBoxBlue.Image.Save(sfd.FileName, ImageFormat.Png);
+                    }
+                    else
+                    {
+                        pictureBoxMono.Image.Save(sfd.FileName, ImageFormat.Png);
                     }
                 }
             }
